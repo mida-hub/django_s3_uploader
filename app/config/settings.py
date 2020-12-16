@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+    'web.apps.WebConfig',
+    'storages',
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -58,7 +60,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -111,9 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ja'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -127,3 +129,20 @@ USE_TZ = True
 
 STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static_dev")
+]
+
+# pagenation
+PAGE_PER_ITEM = 5
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = os.environ.get('accesskey', 'accesskey')
+AWS_SECRET_ACCESS_KEY = os.environ.get('secretkey', 'secretkey')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('bucket_name', 'bucket_name')
+
+# S3 の処理実行時に storage_backends.py を読み込む設定
+DEFAULT_FILE_STORAGE = 'config.storage_backends.MediaStorage'
+
+AWS_SCHEMA_LOCATION = 'schema/'
+SCHEMA_FILE_STORAGE = 'config.storage_backends.SchemaStorage'

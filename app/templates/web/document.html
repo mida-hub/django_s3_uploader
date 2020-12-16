@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}ファイルアップロード{% endblock %}
+
+{% block extra_css %}
+{% endblock %}
+
+{% block content %}
+  <br>
+  <h2 style="text-align: center;">ファイルアップロード</h2>
+  <div style="text-align: center;">
+    s3://{{ bucket }}{{ path }}
+  </div>
+  <form action="" method="POST" class="ui form" enctype="multipart/form-data">
+    {% csrf_token %}  
+    <div class="form-group">
+      <label for="inputText">File</label>
+      <input type="file" class="dropify" name="upload" required id="id_upload" />
+    </div>
+    <br>
+    <div style="text-align: center">
+      <button type="submit" class="btn btn-primary">アップロード</button>
+    </div>
+  </form>
+
+  {% include '_message.html' %}
+
+  {% if page_obj %}
+      <br><br>
+      <h2 style="text-align: center;">アップロードファイルリスト</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>No</td>
+            <td>ファイル名</td>
+            <td>アップロード日時</td>
+            <td>ファイルサイズ</td>
+          </tr>
+        </thead>
+        {% for document in page_obj %}
+        <tbody>
+          <tr>
+            <td>{{ document.id }}</td>
+            <td><a href="{% url 'download' document.id doc %}" download="{{ document.file_name }}" target="_blank">{{ document.file_name }}</a></td>
+            <td>{{ document.uploaded_at|date:"Y-m-j H:i" }}</td>
+            <td>{{ document.upload.size|filesizeformat }}</td>
+          </tr>
+        </tbody>
+        {% endfor %}
+      </table>
+
+      {% include 'pagination.html' %}
+    {% endif %}
+
+{% endblock %}

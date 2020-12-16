@@ -1,0 +1,9 @@
+#image_drop_area {
+	text-align: center;
+	padding: 20px 0;
+	height: 100px;
+	width: 100%;
+	color: #666;
+	background-color: #f9f9f9;
+	border: 4px dotted #bbb;
+}

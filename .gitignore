@@ -1,2 +1,4 @@
 .env
+.env_dev
 .env.db
+.idea

@@ -33,6 +33,7 @@ chmod +x app/entrypoint.sh
 chmod +x app/entrypoint.prod.sh
 
 docker-compose -f docker-compose.prod.yml up -d --build
+docker-compose -f docker-compose.prod.yml exec django python manage.py makemigrations --noinput
 docker-compose -f docker-compose.prod.yml exec django python manage.py migrate --noinput
 docker-compose -f docker-compose.prod.yml exec django python manage.py collectstatic --no-input --clear
 ```
