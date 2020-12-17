@@ -52,17 +52,20 @@ class S3UploadCreateView(CreateView):
         # super().post(request, *args, **kwargs) を参考に override
         self.object = None
         form = self.get_form()
+        if not form.is_valid():
+            messages.error(request, "アップロードが失敗しました。データが不正です。")
+            return self.form_invalid(form)
         try:
-            if form.is_valid():
-                self.object = form.save(commit=False)
-                self.object.file_name = file_name_org
-                self.object.save()
-                messages.success(request, "アップロードが成功しました。")
-                return self.form_valid(form)
+            self.object = form.save(commit=False)
+            self.object.file_name = file_name_org
+            self.object.save()
+            messages.success(request, "アップロードが成功しました。")
         except Exception as e:
             print(e)
-        messages.error(request, "アップロードが失敗しました。")
-        return self.form_invalid(form)
+            messages.error(request, "アップロードが失敗しました。S3へアクセスできません。")
+            return self.form_invalid(form)
+
+        return self.form_valid(form)
 
 
 class RootDocumentCreateView(S3UploadCreateView):
