@@ -37,3 +37,6 @@ docker-compose -f docker-compose.prod.yml exec django python manage.py makemigra
 docker-compose -f docker-compose.prod.yml exec django python manage.py migrate --noinput
 docker-compose -f docker-compose.prod.yml exec django python manage.py collectstatic --no-input --clear
 ```
+
+# ec2 systemdの参考
+https://qiita.com/kanga/items/5f956bc47068c9774522
